@@ -1,0 +1,49 @@
+{
+  "name": "zhang",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "nodemon app.ts",
+    "startTs": "ts-node",
+    "build": "rollup --config",
+    "pkg": "pkg ."
+  },
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/plugin-syntax-top-level-await": "^7.14.5",
+    "@babel/preset-env": "^7.23.2",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.5",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/compression": "^1.7.3",
+    "@types/imagemin": "^8.0.4",
+    "@types/koa-bodyparser": "^4.3.10",
+    "@types/koa__cors": "^4.0.1",
+    "nodemon": "^3.0.1",
+    "rollup": "^4.0.2",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "rollup-plugin-pug": "^1.1.1",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "ts-node-dev": "^2.0.0",
+    "typegraphql-prisma": "^0.27.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.8.3",
+    "body-parser": "^1.20.2",
+    "class-validator": "^0.14.0",
+    "express": "^4.18.2",
+    "node-sql-parser": "^4.11.0",
+    "pug": "^3.0.2",
+    "pug-html-loader": "^1.1.5",
+    "pug-plain-loader": "^1.1.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.2",
+    "type-graphql": "2.0.0-beta.1",
+    "typeorm": "^0.3.17"
+  }
+}
