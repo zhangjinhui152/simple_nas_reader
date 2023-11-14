@@ -35,3 +35,6 @@ const backParentDir = (params) => {
     let newPath = pathArray.join("/");
     location.href = newPath+currnetParam;
 }
+
+
+
