@@ -5,3 +5,4 @@ Prisma
 resolver
 entity
 dist-compiled
+cache/

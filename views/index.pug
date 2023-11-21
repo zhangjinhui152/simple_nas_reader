@@ -35,10 +35,11 @@ html
             path(d='M895.2 425.1H509.1s-44.2-71.4-89.1-71.4H125.1c-20.7 0-38.9 16.3-38.9 36l40 429.2c0 19.7 19.8 35.8 44 35.8h685c24.2 0 44-16.1 44-35.8l40-358c0-19.7-19.8-35.8-44-35.8z' fill='#00B5FC' p-id='5236')
         if type == "image"
           div.relative
-            img.w-full.h-full.object-cover(src="/images/"+reallyPath+cardTitle, alt=cardTitle srcset="")
+            //- img.w-full.h-full.object-cover(src="/images/"+reallyPath+cardTitle, alt=cardTitle srcset="")
+            img.w-full.h-full.object-cover(src=cardTitle, alt=cardTitle srcset="")
             div.absolute.bottom-0.w-full.h-6.bg-slate-500.opacity-50
 
-        p.absolute.bottom-0.mb-0.w-full.truncate.px-2 #{cardTitle}
+        p.absolute.bottom-0.mb-0.w-full.truncate.px-2 #{cardText}
 
     ul.list-group
       li.list-group-item 当前文件夹位置 #{path}
@@ -46,12 +47,12 @@ html
           each file in fileInfoList
             .col-4
               if file.isDirectory()
-                +centeredCard(file.fileName  , file.fileName,"dir" )
+                +centeredCard(file.cacheFileName  , file.fileName,"dir" )
               else if file.isFile()
                 if file.fileName.match(/\.(jpg|jpeg|png|gif)$/i)
-                  +centeredCard(file.fileName  ,file.fileName,"image" )
+                  +centeredCard(file.cacheFileName  ,file.fileName,"image" )
                 else
-                  +centeredCard(file.fileName  ,file.fileName,"file" )
+                  +centeredCard(file.cacheFileName  ,file.fileName,"file" )
     .flex.space-x-4.mt-2
       button.px-4.py-2.bg-blue-500.text-white.rounded-md(onclick=`backParentDir()`) 父文件夹
       button.px-4.py-2.bg-blue-500.text-white.rounded-md(onclick=`next(-5,-5)`) 上一页

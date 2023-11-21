@@ -1,6 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import fs, { Stats } from 'fs';
 import path from "path";
+import imageUtil from './util/imageUtil';
+import pug from 'pug';
 const app: Application = express();
 const port = 3000;
 import { fileURLToPath } from 'url'
@@ -18,12 +20,26 @@ app.use(express.static(path.join(__dirnameNew, '/public')));
 const args = process.argv.slice(2);
 console.log('args :>> ', args);
 app.use('/images', express.static(path.join(args[1])));
+app.use('/cache', express.static(path.join(__dirnameNew, '/cache')));
+const cachePath = path.join(__dirnameNew, '/cache')
+console.log('cachePath :>> ', cachePath);
+
+const ffmpegPath = args[2]
+
+
+
+
+
+
+
+
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Hey', message: 'Hello there!' })
 })
 interface FileNameCustomStats extends Stats {
     fileName?: string;
+    cacheFileName?: string;
 }
 app.get('/filePath/*', (req: Request, res) => {
     const params = req.params[0].split('/'); // 将路径参数拆分为数组
@@ -47,6 +63,7 @@ app.get('/filePath/*', (req: Request, res) => {
             for (const iterator of files) {
                 let fileInfo: FileNameCustomStats = await getFileInfo(directoryPath + '/' + iterator)
                 fileInfo.fileName = iterator
+                fileInfo.cacheFileName = `/cache/${iterator}_compressed.jpg`
                 console.log('directoryPath ', directoryPath + '/' + iterator);
 
                 // console.log('fileInfo :>> ', fileInfo);
@@ -54,17 +71,32 @@ app.get('/filePath/*', (req: Request, res) => {
                 fileInfoList.push(fileInfo)
             }
             let reallyPath = directoryPath.replace(args[1], '') + "/"
-
+            imageUtil.compress(files, directoryPath + "/", cachePath + "/", ffmpegPath)
             console.log('reallyPath :>> ', reallyPath);
             console.log('directoryPath :>> ', directoryPath);
-
-
-            res.render('index', { path: directoryPath, files: files, fileInfoList: fileInfoList, reallyPath: reallyPath })
+            const template = pug.compileFile('./views/index.pug');
+            const renderedTemplate = template({ path: directoryPath, files, fileInfoList, reallyPath });
+            res.send(renderedTemplate);
+            // res.render('index', { path: directoryPath, files: files, fileInfoList: fileInfoList, reallyPath: reallyPath })
 
 
         }
     });
 });
+
+app.get('/test', (req: Request, res) => {
+    const greet = (name: string) => {
+        return `Hello, ${name}!`;
+    };
+    const template = pug.compileFile('./views/test.pug');
+    const renderedTemplate = template({ greet });
+
+    // console.log(renderedTemplate);
+    res.send(renderedTemplate);
+})
+
+
+
 
 
 try {
@@ -74,3 +106,4 @@ try {
 } catch (error: any) {
     console.error(`Error occured: ${error.message}`);
 }
+// D:/bainc/TOOL/ffmpeg-4.4-essentials_build/bin/ffmpeg.exe

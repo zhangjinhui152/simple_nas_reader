@@ -28,6 +28,7 @@
   ],
   "include": [
     "app.ts",
+    "src/**.ts",
   ],
   "ts-node": {
     "esm": true,
