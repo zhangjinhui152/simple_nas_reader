@@ -3,6 +3,7 @@ import fs, { Stats } from 'fs';
 import path from "path";
 import imageUtil from './util/imageUtil';
 import pug from 'pug';
+import { computeHash } from './util/other';
 const app: Application = express();
 const port = 3000;
 import { fileURLToPath } from 'url'
@@ -35,7 +36,7 @@ const ffmpegPath = args[2]
 
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Hey', message: 'Hello there!' })
+    return "please use '/filePath/*!'"
 })
 interface FileNameCustomStats extends Stats {
     fileName?: string;
@@ -47,9 +48,7 @@ app.get('/filePath/*', (req: Request, res) => {
     const directoryPath = args[1] + '/' + params.join('/'); // 替换为你要遍历的目录路径
     const start = req.query.s ?? 0
     const end = req.query.e ?? 5
-
-
-
+    let reallyPath = directoryPath.replace(args[1], '') + "/"
 
     fs.readdir(directoryPath, async (err, files: string[]) => {
         if (err) {
@@ -57,20 +56,16 @@ app.get('/filePath/*', (req: Request, res) => {
             res.sendStatus(500);
         } else {
             console.log('files :>> ', files);
-            let lastFileName = params.join(">")
             let fileInfoList: FileNameCustomStats[] = []
             files = files.slice(Number(start), Number(end))
             for (const iterator of files) {
                 let fileInfo: FileNameCustomStats = await getFileInfo(directoryPath + '/' + iterator)
                 fileInfo.fileName = iterator
-                fileInfo.cacheFileName = `/cache/${iterator}_compressed.jpg`
+                fileInfo.cacheFileName = `/cache/${iterator}_${computeHash(directoryPath + "/").slice(0, 5)}_compressed.jpg`
                 console.log('directoryPath ', directoryPath + '/' + iterator);
-
-                // console.log('fileInfo :>> ', fileInfo);
-
                 fileInfoList.push(fileInfo)
             }
-            let reallyPath = directoryPath.replace(args[1], '') + "/"
+
             imageUtil.compress(files, directoryPath + "/", cachePath + "/", ffmpegPath)
             console.log('reallyPath :>> ', reallyPath);
             console.log('directoryPath :>> ', directoryPath);

@@ -10,7 +10,7 @@ html
     script(src="/js/taliwind.js")
     script(src="/js/my.js")
     mixin centeredCard(cardTitle, cardText,type)
-      div.w-24.h-24.bg-slate-100.mb-2.mt-2.relative(onclick=`handleClick('${type}','${cardText}')`)
+      div.w-24.h-24.bg-slate-100.mb-2.mt-2.relative.rounded-md.box-shadow-card(onclick=`handleClick('${type}','${cardText}','${reallyPath}')`)
         if type == "file"
           svg.w-8.h-8.absolute.top-8.left-8.icon(t='1699494951305' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='6285' width='200' height='200')
             path(d='M514.048 507.904m-502.272 0a502.272 502.272 0 1 0 1004.544 0 502.272 502.272 0 1 0-1004.544 0Z' fill='#2AB2BE' p-id='6286')
@@ -34,7 +34,7 @@ html
             path(d='M796 713.5l-619 36.3-22.1-406.3 618.8-40.1z' fill='#FFFFFF' p-id='5235')
             path(d='M895.2 425.1H509.1s-44.2-71.4-89.1-71.4H125.1c-20.7 0-38.9 16.3-38.9 36l40 429.2c0 19.7 19.8 35.8 44 35.8h685c24.2 0 44-16.1 44-35.8l40-358c0-19.7-19.8-35.8-44-35.8z' fill='#00B5FC' p-id='5236')
         if type == "image"
-          div.relative
+          div.relative.rounded-md.overflow-hidden.box-shadow-card
             //- img.w-full.h-full.object-cover(src="/images/"+reallyPath+cardTitle, alt=cardTitle srcset="")
             img.w-full.h-full.object-cover(src=cardTitle, alt=cardTitle srcset="")
             div.absolute.bottom-0.w-full.h-6.bg-slate-500.opacity-50
@@ -42,7 +42,8 @@ html
         p.absolute.bottom-0.mb-0.w-full.truncate.px-2 #{cardText}
 
     ul.list-group
-      li.list-group-item 当前文件夹位置 #{path}
+      li.list-group-item.bg-transparent
+        p.w-full.border-b-2.border-gray-200.text-lg.font-semibold  当前文件夹位置 #{path}
         .row
           each file in fileInfoList
             .col-4
@@ -53,7 +54,15 @@ html
                   +centeredCard(file.cacheFileName  ,file.fileName,"image" )
                 else
                   +centeredCard(file.cacheFileName  ,file.fileName,"file" )
-    .flex.space-x-4.mt-2
-      button.px-4.py-2.bg-blue-500.text-white.rounded-md(onclick=`backParentDir()`) 父文件夹
-      button.px-4.py-2.bg-blue-500.text-white.rounded-md(onclick=`next(-5,-5)`) 上一页
-      button.px-4.py-2.bg-blue-500.text-white.rounded-md(onclick=`next(+5,+5)`) 下一页
+    .flex.space-x-4.mt-2.justify-around
+      mixin customButton(fn,text)
+        button.px-3.py-2.bg-blue-500.text-sky-600.rounded-md.bg-transparent.border-sky-600.border-2.text-sm(onclick=fn) #{text}
+      +customButton(`backParentDir()`,"父文件夹")
+      +customButton(`next(-5,-5)`,"上一页")
+      +customButton(`next(+5,+5)`,"下一页")
+        //- button.px-2.py-2.bg-blue-500.text-sky-600.rounded-md.bg-transparent.border-sky-600.border-2(onclick=`backParentDir()`) 父文件夹
+        //- button.px-2.py-2.bg-blue-500.text-sky-600.rounded-md.bg-transparent.border-sky-600.border-2(onclick=`next(-5,-5)`) 上一页
+        //- button.px-2.py-2.bg-blue-500.text-sky-600.rounded-md.bg-transparent.border-sky-600.border-2(onclick=`next(+5,+5)`) 下一页
+        //- button.px-2.py-2.bg-blue-500.text-sky-600.rounded-md.bg-transparent.border-sky-600.border-2(onclick=`next(+5,+5)`) 下一页
+    .image-show-model#image-show.bg-transparent.absolute.top-9.hidden(class="w-4/5")
+      img.w-full.h-full#showImage.p-1.box-shadow-image(onclick=`closeImage()`)

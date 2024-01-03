@@ -37,6 +37,6 @@ export default {
         typescript(),
         
     ],
-    external: ['pug']  ,// 告诉 Rollup 'pug' 是外部模块,
+    // external: ['pug']  ,// 告诉 Rollup 'pug' 是外部模块,
     experimentalTopLevelAwait: true,
 };
